@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coraleye — The customer agent that knows, acts, and never sleeps</title>
+  <meta name="description" content="Intelligent customer success, on autopilot. Coraleye unifies every customer interaction and deploys Cory, an AI agent that surfaces churn risks and executes recovery plays before you'd notice the pattern." />
+  <style>
+    /* ─── Reset & Base ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #f3f4f6;
+      --bg-card:     #ffffff;
+      --bg-raised:   #eaecf0;
+      --border:      rgba(0,0,0,0.08);
+      --orange:      #e07230;
+      --orange-dim:  rgba(224,114,48,0.10);
+      --blue:        #1f497d;
+      --blue-dim:    rgba(31,73,125,0.09);
+      --text:        #0d1117;
+      --text-muted:  #4a5568;
+      --text-subtle: #9aa0ae;
+      --radius:      10px;
+      --radius-lg:   16px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ─── Utilities ─────────────────────────────────────────────────── */
+    .container {
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: 100px 0;
+    }
+
+    .label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 20px;
+    }
+
+    .label::before {
+      content: '';
+      display: block;
+      width: 18px;
+      height: 2px;
+      background: var(--orange);
+      border-radius: 2px;
+    }
+
+    h1 { font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.03em; }
+    h2 { font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 700; line-height: 1.2; letter-spacing: -0.025em; }
+    h3 { font-size: 1.15rem; font-weight: 600; line-height: 1.4; }
+
+    /* ─── Nav ───────────────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid transparent;
+      background: transparent;
+      transition: background-color 0.3s ease;
+    }
+
+    nav.scrolled {
+      background-color: #1a2744;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.01em;
+      color: #e8782a;
+    }
+
+    .nav-logo-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.875rem;
+      color: #ffffff;
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover { color: rgba(255,255,255,0.8); }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 20px;
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s;
+      border: none;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: #f0892a;
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background: #d97824;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(240,137,42,0.30);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: #ffffff;
+      border: 1px solid rgba(255,255,255,0.4);
+    }
+
+    .btn-ghost:hover {
+      color: #ffffff;
+      border-color: rgba(255,255,255,0.7);
+      background: rgba(255,255,255,0.08);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: #ffffff;
+      border: 1px solid rgba(255,255,255,0.4);
+    }
+
+    .btn-outline:hover {
+      border-color: rgba(255,255,255,0.7);
+      color: #ffffff;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .btn-lg {
+      padding: 13px 28px;
+      font-size: 0.9375rem;
+      border-radius: 11px;
+    }
+
+    /* ─── Hero ──────────────────────────────────────────────────────── */
+    #hero {
+      padding: 160px 0 100px;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(to right, #1a2744 0%, #1a2744 25%, rgba(26, 39, 68, 0.9) 40%, rgba(26, 39, 68, 0.75) 55%, rgba(26, 39, 68, 0.55) 70%, rgba(26, 39, 68, 0.35) 85%, rgba(26, 39, 68, 0.2) 100%);
+    }
+
+    .hero-grid-lines {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 600px;
+      background: radial-gradient(ellipse at center, rgba(224,114,48,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+      color: #f8fafc;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(280px, 1fr) minmax(320px, 420px);
+      gap: 48px;
+      align-items: flex-start;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-visual {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: auto;
+      position: relative;
+      align-self: stretch;
+      height: auto;
+    }
+
+    .hero-cory-card {
+      width: auto;
+      max-width: none;
+      position: relative;
+      margin-left: auto;
+      padding: 0;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      height: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-cory-img {
+      height: auto;
+      max-height: 420px;
+      width: auto;
+      object-fit: contain;
+      display: block;
+      animation: float 3s ease-in-out infinite;
+      transform: translateX(8%);
+      margin-top: -40px;
+    }
+
+    .hero-cory-note {
+      font-size: 0.95rem;
+      color: rgba(248,250,252,0.9);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .hero-ticker {
+      margin-top: 32px;
+      max-width: 680px;
+    }
+
+    .ticker-label {
+      font-size: 0.8rem;
+      color: var(--text-subtle);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+
+    .ticker-shell {
+      position: relative;
+      background: #111418;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 22px 24px;
+      min-height: 96px;
+      overflow: hidden;
+    }
+
+    .ticker-shell::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), transparent 60%);
+      pointer-events: none;
+    }
+
+    .ticker-message {
+      position: relative;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.32s ease, transform 0.32s ease;
+      color: #f8fafc;
+      line-height: 1.7;
+      font-size: 0.98rem;
+      white-space: pre-wrap;
+    }
+
+    .ticker-message.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .ticker-keyword {
+      color: var(--orange);
+      font-weight: 700;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 12px 5px 6px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #f8fafc;
+      margin-bottom: 28px;
+    }
+
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--orange);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    #hero h1 {
+      margin-bottom: 24px;
+      color: #ffffff;
+    }
+
+    #hero h1 em {
+      font-style: normal;
+      color: var(--orange);
+    }
+
+    .hero-sub {
+      font-size: 1.15rem;
+      color: rgba(255,255,255,0.8);
+      max-width: 560px;
+      margin-bottom: 40px;
+      line-height: 1.7;
+    }
+
+    .hero-ctas {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+
+    .hero-ctas .btn-outline {
+      color: #f8fafc;
+      border-color: rgba(255,255,255,0.22);
+    }
+
+    .hero-ctas .btn-ghost {
+      color: rgba(248,250,252,0.92);
+      border-color: rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .hero-social-proof {
+      margin-top: 44px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      color: rgba(248,250,252,0.78);
+      font-size: 0.85rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 24px;
+    }
+
+    .hero-social-proof span {
+      color: rgba(248,250,252,0.84);
+    }
+
+    .contact-block {
+      margin-top: 32px;
+      padding: 28px 28px 24px;
+      background: #ffffff;
+      border-radius: 20px;
+      border: 1px solid rgba(15,23,42,0.08);
+      max-width: 720px;
+    }
+
+    .contact-block h3 {
+      margin-bottom: 16px;
+      font-size: 1.15rem;
+      color: var(--text);
+    }
+
+    .contact-block p {
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 14px;
+      max-width: 680px;
+    }
+
+    .mail-link {
+      color: var(--orange);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .mail-link:hover {
+      text-decoration: underline;
+    }
+
+    .hero-sp-logos {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sp-logo-pill {
+      padding: 4px 10px;
+      background: var(--bg-raised);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.75rem;
+      color: var(--text-subtle);
+      font-weight: 500;
+      letter-spacing: 0.03em;
+    }
+
+    /* ─── Integration Strip ─────────────────────────────────────────── */
+    .integration-strip {
+      padding: 48px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .integration-strip-inner {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      overflow: hidden;
+    }
+
+    .strip-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-subtle);
+      white-space: nowrap;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .strip-logos {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .strip-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-subtle);
+      font-size: 0.875rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      opacity: 0.5;
+      transition: opacity 0.2s;
+    }
+
+    .strip-logo:hover { opacity: 0.85; }
+
+    .strip-logo-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+
+    /* ─── Problem ───────────────────────────────────────────────────── */
+    #problem {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .problem-left h2 { margin-bottom: 24px; }
+
+    .problem-left p {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .problem-stat-row {
+      display: flex;
+      gap: 32px;
+      margin-top: 40px;
+    }
+
+    .problem-stat {
+      border-left: 2px solid var(--orange);
+      padding-left: 16px;
+    }
+
+    .stat-num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.03em;
+    }
+
+    .stat-desc {
+      font-size: 0.8rem;
+      color: var(--text-subtle);
+      margin-top: 2px;
+    }
+
+    .problem-right {
+      position: relative;
+    }
+
+    .chaos-diagram {
+      background: var(--bg-raised);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chaos-diagram::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(31,73,125,0.10) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .chaos-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-subtle);
+      margin-bottom: 24px;
+    }
+
+    .chaos-nodes {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .chaos-node {
+      padding: 10px 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    .chaos-arrow {
+      text-align: center;
+      color: var(--text-subtle);
+      font-size: 1.2rem;
+      margin: 4px 0;
+    }
+
+    .chaos-result {
+      padding: 12px 16px;
+      background: rgba(224,114,48,0.08);
+      border: 1px solid rgba(224,114,48,0.22);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--orange);
+      text-align: center;
+      font-weight: 500;
+    }
+
+    /* ─── How it Works ──────────────────────────────────────────────── */
+    #how-it-works {
+      position: relative;
+    }
+
+    .how-header {
+      text-align: center;
+      max-width: 560px;
+      margin: 0 auto 72px;
+    }
+
+    .how-header h2 { margin-bottom: 16px; }
+    .how-header p { color: var(--text-muted); font-size: 1rem; }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      position: relative;
+    }
+
+    .steps-grid::before {
+      content: '';
+      position: absolute;
+      top: 60px;
+      left: calc(16.66% + 24px);
+      right: calc(16.66% + 24px);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--orange), transparent);
+      opacity: 0.4;
+    }
+
+    .step-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 36px 32px;
+      position: relative;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .step-card:hover {
+      border-color: rgba(224,114,48,0.35);
+      transform: translateY(-3px);
+    }
+
+    .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: var(--orange-dim);
+      border: 1px solid rgba(224,114,48,0.2);
+      color: var(--orange);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin-bottom: 24px;
+    }
+
+    .step-card h3 {
+      margin-bottom: 12px;
+      font-size: 1.1rem;
+    }
+
+    .step-card p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+
+    .step-integrations {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 20px;
+    }
+
+    .int-tag {
+      padding: 3px 8px;
+      background: var(--blue-dim);
+      border: 1px solid rgba(31,73,125,0.15);
+      border-radius: 5px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--blue);
+    }
+
+    /* ─── Meet Cory ─────────────────────────────────────────────────── */
+    #meet-cory {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cory-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .cory-mascot {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .cory-orb {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.07), 0 0 80px rgba(224,114,48,0.06);
+    }
+
+    .cory-img {
+      width: 200px;
+      height: 200px;
+      object-fit: contain;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+
+    .cory-orbit {
+      position: absolute;
+      inset: -24px;
+      border-radius: 50%;
+      border: 1px dashed rgba(224,114,48,0.25);
+      animation: orbit-spin 18s linear infinite;
+    }
+
+    @keyframes orbit-spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .orbit-dot {
+      position: absolute;
+      top: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--orange);
+      box-shadow: 0 0 10px rgba(224,114,48,0.5);
+    }
+
+    .cory-info h2 { margin-bottom: 20px; }
+
+    .cory-info p {
+      color: var(--text-muted);
+      font-size: 1.0rem;
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .cory-traits {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .cory-trait {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px;
+      background: var(--bg-raised);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    .trait-icon {
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .trait-text {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .trait-text strong {
+      display: block;
+      color: var(--text);
+      font-size: 0.875rem;
+      margin-bottom: 2px;
+    }
+
+    /* ─── Quotes ────────────────────────────────────────────────────── */
+    #quotes {
+      position: relative;
+    }
+
+    .quotes-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .quotes-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .quote-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      transition: border-color 0.2s, transform 0.2s;
+      position: relative;
+    }
+
+    .quote-card:hover {
+      border-color: rgba(0,0,0,0.14);
+      transform: translateY(-3px);
+    }
+
+    .quote-mark {
+      font-size: 3rem;
+      line-height: 1;
+      color: var(--orange);
+      opacity: 0.35;
+      font-family: Georgia, serif;
+      margin-bottom: -12px;
+    }
+
+    .quote-text {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: var(--text-muted);
+      flex: 1;
+      font-style: italic;
+    }
+
+    .quote-attr {
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .quote-name {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .quote-company {
+      font-size: 0.8rem;
+      color: var(--text-subtle);
+      margin-top: 2px;
+    }
+
+    /* ─── Final CTA ─────────────────────────────────────────────────── */
+    #cta-section {
+      padding: 100px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-glow {
+      position: absolute;
+      bottom: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 500px;
+      background: radial-gradient(ellipse at center, rgba(224,114,48,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-box {
+      position: relative;
+      z-index: 1;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 72px 48px;
+      max-width: 720px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+
+    .cta-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(224,114,48,0.4), transparent);
+    }
+
+    .cta-box h2 {
+      margin-bottom: 16px;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+    }
+
+    .cta-box p {
+      color: var(--text-muted);
+      font-size: 1rem;
+      margin-bottom: 36px;
+      max-width: 420px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    /* ─── Footer ────────────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 48px 0;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .footer-logo-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 7px;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .footer-brand {
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .footer-tagline {
+      font-size: 0.8rem;
+      color: var(--text-subtle);
+      margin-top: 2px;
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      font-size: 0.85rem;
+      color: var(--text-subtle);
+      transition: color 0.15s;
+    }
+
+    .footer-links a:hover { color: var(--text-muted); }
+
+    .footer-right {
+      font-size: 0.8rem;
+      color: var(--text-subtle);
+    }
+
+    /* ─── Scroll Reveal ─────────────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* ─── Responsive ────────────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .problem-grid, .cory-grid { grid-template-columns: 1fr; gap: 48px; }
+      .steps-grid { grid-template-columns: 1fr; }
+      .steps-grid::before { display: none; }
+      .quotes-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .problem-right { order: -1; }
+    }
+
+    @media (max-width: 600px) {
+      .section { padding: 72px 0; }
+      #hero { padding: 120px 0 72px; }
+      .hero-social-proof { flex-direction: column; align-items: flex-start; }
+      .problem-stat-row { flex-direction: column; gap: 20px; }
+      .cory-traits { grid-template-columns: 1fr; }
+      .cta-box { padding: 48px 24px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── Nav ────────────────────────────────────────────────────────── -->
+  <nav id="main-nav">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="#" class="nav-logo">
+          <div class="nav-logo-mark">
+            <img src="kory.png" alt="Cory mascot" style="width:28px;height:28px;object-fit:contain;border-radius:6px;" />
+          </div>
+          Coraleye
+        </a>
+        <ul class="nav-links">
+          <li><a href="#problem">Problem</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#how-it-works">How it works</a></li>
+          <li><a href="#meet-cory">Meet Cory</a></li>
+        </ul>
+        <div class="nav-cta">
+          <a href="https://coraleye-demo.onrender.com" class="btn btn-ghost" target="_blank" rel="noopener">Watch Demo</a>
+          <a href="mailto:hello@coraleye.com" class="btn btn-primary">Request Access</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ─── Hero ───────────────────────────────────────────────────────── -->
+  <section id="hero">
+    <div class="hero-grid-lines"></div>
+    <div class="hero-glow"></div>
+    <div class="container">
+      <div class="hero-inner">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <div class="hero-badge-dot"></div>
+            AI-native customer success platform
+          </div>
+          <h1>The customer agent that<br><em>knows, acts,</em> and never sleeps</h1>
+          <p class="hero-sub">Intelligent customer success, on autopilot. Coraleye unifies every interaction across your stack and deploys Cory — an AI agent that catches churn before you'd notice the pattern.</p>
+          <div class="hero-ctas">
+            <a href="https://coraleye-demo.onrender.com" class="btn btn-primary btn-lg" target="_blank" rel="noopener">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="white" stroke-width="1.5"/><polygon points="6.5,5 11,8 6.5,11" fill="white"/></svg>
+              Watch Demo
+            </a>
+            <a href="mailto:hello@coraleye.com" class="btn btn-outline btn-lg">Request Access →</a>
+          </div>
+          <div class="hero-ticker">
+            <div class="ticker-label">Live Cory dispatch</div>
+            <div class="ticker-shell">
+              <div class="ticker-message"></div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="hero-cory-card">
+            <img src="kory.png" alt="Cory mascot" class="hero-cory-img" />
+          </div>
+        </div>
+      </div>
+      <div class="hero-social-proof">
+        <span>Trusted signal from CS leaders at</span>
+        <div class="hero-sp-logos">
+          <span class="sp-logo-pill">$1B+ tech</span>
+          <span class="sp-logo-pill">$15B+ tech</span>
+          <span class="sp-logo-pill">Series C</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── About Us ───────────────────────────────────────────────────── -->
+  <section id="about" class="section">
+    <div class="container">
+      <div class="label">About Coraleye</div>
+      <h2>Why We Built Coraleye</h2>
+      <p>Customer success teams are flying blind. Accounts get hot-potatoed between onboarding, account management, product, and support — with every interaction scattered across Zendesk, Intercom, Gong, Slack, and email. By the time anyone connects the dots, the customer has already decided to leave. We built Coraleye to change that.</p>
+      <p>Coraleye was founded by three friends from the Bay Area and Northwestern — Chris, Arman, and Duane — who saw this problem firsthand across finance, AI engineering, and investing.</p>
+      <div class="contact-block">
+        <h3>Get in Touch</h3>
+        <p><a href="mailto:hello@coraleye.com" class="mail-link">hello@coraleye.com</a></p>
+        <p>Interested in becoming a design partner? We'd love to hear from you.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Integration Strip ──────────────────────────────────────────── -->
+  <div class="integration-strip">
+    <div class="container">
+      <div class="integration-strip-inner">
+        <span class="strip-label">Connects to</span>
+        <div class="strip-logos">
+          <div class="strip-logo">
+            <div class="strip-logo-icon" style="background:#1f7a3c10;">💬</div>
+            Zendesk
+          </div>
+          <div class="strip-logo">
+            <div class="strip-logo-icon" style="background:#ff4f0010;">🎙</div>
+            Gong
+          </div>
+          <div class="strip-logo">
+            <div class="strip-logo-icon" style="background:#1f6feb10;">💭</div>
+            Intercom
+          </div>
+          <div class="strip-logo">
+            <div class="strip-logo-icon" style="background:#6366f110;">🤖</div>
+            Decagon
+          </div>
+          <div class="strip-logo">
+            <div class="strip-logo-icon" style="background:#4a154b10;">#</div>
+            Slack
+          </div>
+          <div class="strip-logo">
+            <div class="strip-logo-icon" style="background:#1f497d18;">✉</div>
+            Email
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Problem ────────────────────────────────────────────────────── -->
+  <section id="problem" class="section">
+    <div class="container">
+      <div class="problem-grid">
+        <div class="problem-left reveal">
+          <div class="label">The problem</div>
+          <h2>By the time you connect the dots, they've already decided to leave</h2>
+          <p>Accounts are hot-potatoed between onboarding, account management, product, and support. Every team sees a slice of the story — no one sees the whole thing.</p>
+          <p>By the time anyone connects the dots, the customer has already decided to leave.</p>
+          <div class="problem-stat-row">
+            <div class="problem-stat">
+              <div class="stat-num">8+</div>
+              <div class="stat-desc">People touching one account at the same time</div>
+            </div>
+            <div class="problem-stat">
+              <div class="stat-num">6 tools</div>
+              <div class="stat-desc">Siloed systems no one reads in full</div>
+            </div>
+            <div class="problem-stat">
+              <div class="stat-num">0 days</div>
+              <div class="stat-desc">Warning before a quiet churn decision is made</div>
+            </div>
+          </div>
+        </div>
+        <div class="problem-right reveal reveal-delay-2">
+          <div class="chaos-diagram">
+            <div class="chaos-title">A single customer account</div>
+            <div class="chaos-nodes">
+              <div class="chaos-node">Onboarding</div>
+              <div class="chaos-node">Account Mgr</div>
+              <div class="chaos-node">Support</div>
+              <div class="chaos-node">Product</div>
+              <div class="chaos-node">CSM</div>
+              <div class="chaos-node">Sales</div>
+            </div>
+            <div class="chaos-arrow">↓</div>
+            <div class="chaos-result">No one has the full picture</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── How it Works ───────────────────────────────────────────────── -->
+  <section id="how-it-works" class="section">
+    <div class="container">
+      <div class="how-header reveal">
+        <div class="label">How it works</div>
+        <h2>From signal to action in one motion</h2>
+        <p>Coraleye ingests every customer touchpoint, Cory reads the patterns, and the right play is executed before a human would have thought to look.</p>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card reveal">
+          <div class="step-num">01</div>
+          <h3>Unify</h3>
+          <p>Every interaction — support tickets, calls, messages, emails — flows into a single customer timeline. No more tab-switching, no more gaps.</p>
+          <div class="step-integrations">
+            <span class="int-tag">Zendesk</span>
+            <span class="int-tag">Gong</span>
+            <span class="int-tag">Intercom</span>
+            <span class="int-tag">Decagon</span>
+            <span class="int-tag">Slack</span>
+            <span class="int-tag">Email</span>
+          </div>
+        </div>
+        <div class="step-card reveal reveal-delay-1">
+          <div class="step-num">02</div>
+          <h3>Analyze</h3>
+          <p>Cory reads patterns across every system simultaneously — tracking sentiment shifts, response lag, feature friction, and escalation signals no single tool can see.</p>
+        </div>
+        <div class="step-card reveal reveal-delay-2">
+          <div class="step-num">03</div>
+          <h3>Act</h3>
+          <p>Cory deploys the right recovery play — a QBR trigger, an outreach draft, an escalation flag. Your CSM approves in one click. No missed windows.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Meet Cory ──────────────────────────────────────────────────── -->
+  <section id="meet-cory" class="section">
+    <div class="container">
+      <div class="cory-grid">
+        <div class="cory-mascot reveal">
+          <div class="cory-orb">
+            <div class="cory-orbit">
+              <div class="orbit-dot"></div>
+            </div>
+            <img src="kory.png" alt="Cory" class="cory-img" />
+          </div>
+        </div>
+        <div class="cory-info reveal reveal-delay-1">
+          <div class="label">Meet Cory</div>
+          <h2>Your AI agent that never misses a signal</h2>
+          <p>Cory reads across the full customer timeline — every Zendesk ticket, Gong call, Slack message, and email thread — and connects signals that no human would catch in the noise of eight parallel relationships.</p>
+          <p>When a pattern points to risk, Cory doesn't file a report. Cory pushes the recovery play, before anyone thought to ask.</p>
+          <div class="cory-traits">
+            <div class="cory-trait">
+              <div class="trait-icon">🔭</div>
+              <div class="trait-text">
+                <strong>Always watching</strong>
+                Monitors every account, 24/7, across every channel
+              </div>
+            </div>
+            <div class="cory-trait">
+              <div class="trait-icon">🧩</div>
+              <div class="trait-text">
+                <strong>Pattern recognition</strong>
+                Connects dots across tools and timelines humans can't hold in memory
+              </div>
+            </div>
+            <div class="cory-trait">
+              <div class="trait-icon">⚡</div>
+              <div class="trait-text">
+                <strong>Action-first</strong>
+                Drafts the play and waits for a single CSM approval
+              </div>
+            </div>
+            <div class="cory-trait">
+              <div class="trait-icon">🛡</div>
+              <div class="trait-text">
+                <strong>Human-in-the-loop</strong>
+                CSMs stay in control — Cory does the legwork, you make the call
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Quotes ─────────────────────────────────────────────────────── -->
+  <section id="quotes" class="section">
+    <div class="container">
+      <div class="quotes-header reveal">
+        <div class="label">From CS leaders</div>
+        <h2>The problem is universal.<br>The solution hasn't existed — until now.</h2>
+      </div>
+      <div class="quotes-grid">
+        <div class="quote-card reveal">
+          <div class="quote-mark">"</div>
+          <p class="quote-text">We have sometimes up to eight people interacting with the customer at any given time. It is very hard to look across all of those different connections.</p>
+          <div class="quote-attr">
+            <div class="quote-name">Head of Customer Success</div>
+            <div class="quote-company">$1B+ technology company</div>
+          </div>
+        </div>
+        <div class="quote-card reveal reveal-delay-1">
+          <div class="quote-mark">"</div>
+          <p class="quote-text">Most companies aren't systems of action, they are systems of recommendations.</p>
+          <div class="quote-attr">
+            <div class="quote-name">Global Head of Customer Success</div>
+            <div class="quote-company">$15B+ technology company</div>
+          </div>
+        </div>
+        <div class="quote-card reveal reveal-delay-2">
+          <div class="quote-mark">"</div>
+          <p class="quote-text">I would like my CSM team to spend zero time on follow-ups and actually taking action.</p>
+          <div class="quote-attr">
+            <div class="quote-name">Director of Customer Success</div>
+            <div class="quote-company">Series C startup</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CTA ────────────────────────────────────────────────────────── -->
+  <section id="cta-section">
+    <div class="cta-glow"></div>
+    <div class="container">
+      <div class="cta-box reveal">
+        <div class="label" style="justify-content:center;">Get started</div>
+        <h2>See Coraleye in action</h2>
+        <p>Watch how Cory unifies a full customer timeline and surfaces a recovery play in real time.</p>
+        <div class="cta-buttons">
+          <a href="https://coraleye-demo.onrender.com" class="btn btn-primary btn-lg" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="white" stroke-width="1.5"/><polygon points="6.5,5 11,8 6.5,11" fill="white"/></svg>
+            Watch the Live Demo
+          </a>
+          <a href="mailto:hello@coraleye.com" class="btn btn-outline btn-lg">Talk to us →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Footer ─────────────────────────────────────────────────────── -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-left">
+          <div class="footer-logo-mark">
+            <img src="kory.png" alt="Coraleye" style="width:32px;height:32px;object-fit:contain;" />
+          </div>
+          <div>
+            <div class="footer-brand">Coraleye</div>
+            <div class="footer-tagline">Intelligent customer success, on autopilot</div>
+          </div>
+        </div>
+        <div class="footer-links">
+          <a href="https://coraleye.com">coraleye.com</a>
+          <a href="mailto:hello@coraleye.com">hello@coraleye.com</a>
+          <a href="https://coraleye-demo.onrender.com" target="_blank" rel="noopener">Live Demo</a>
+        </div>
+        <div class="footer-right">
+          © 2026 Coraleye. All rights reserved.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ─── JS ─────────────────────────────────────────────────────────── -->
+  <script>
+    // Sticky nav with scroll threshold
+    const nav = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 80) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    }, { passive: true });
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+
+    // Ticker content for hero live dispatch
+    const tickerMessages = [
+      `Cory flagged <span class="ticker-keyword">Northstar Insurance</span> — <span class="ticker-keyword">bot failure</span> + <span class="ticker-keyword">unanswered renewal question</span> + <span class="ticker-keyword">support escalation</span>. <span class="ticker-keyword">Apology call deployed</span>.`,
+      `Cory connected <span class="ticker-keyword">3 signals</span> across <span class="ticker-keyword">Gong, Zendesk, and Decagon</span> for <span class="ticker-keyword">Rivers Bank</span>. <span class="ticker-keyword">Recovery play approved and sent</span>.`,
+      `Cory detected a <span class="ticker-keyword">competitor mention pattern</span> across <span class="ticker-keyword">4 accounts</span>. <span class="ticker-keyword">Expansion plays queued</span> for <span class="ticker-keyword">CSM review</span>.`
+    ];
+    const tickerEl = document.querySelector('.ticker-message');
+    let tickerIndex = 0;
+    function updateTicker() {
+      if (!tickerEl) return;
+      tickerEl.classList.remove('active');
+      setTimeout(() => {
+        tickerEl.innerHTML = tickerMessages[tickerIndex];
+        tickerEl.classList.add('active');
+        tickerIndex = (tickerIndex + 1) % tickerMessages.length;
+      }, 220);
+    }
+    updateTicker();
+    setInterval(updateTicker, 3000);
+
+    // Remove dark navy background from logo images via canvas
+    function removeDarkBg(imgEl, tolerance) {
+      if (!imgEl.complete || imgEl.naturalWidth === 0) {
+        imgEl.addEventListener('load', () => removeDarkBg(imgEl, tolerance));
+        return;
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width  = imgEl.naturalWidth;
+      canvas.height = imgEl.naturalHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(imgEl, 0, 0);
+      const id   = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = id.data;
+      // Flood-fill transparent from all four corners to catch the solid bg
+      const w = canvas.width, h = canvas.height;
+      const seeds = [[0,0],[w-1,0],[0,h-1],[w-1,h-1]];
+      const visited = new Uint8Array(w * h);
+      const queue = [];
+      // Sample bg colour from top-left pixel
+      const bgR = data[0], bgG = data[1], bgB = data[2];
+      seeds.forEach(([sx,sy]) => { queue.push(sy * w + sx); });
+      while (queue.length) {
+        const idx = queue.pop();
+        if (visited[idx]) continue;
+        visited[idx] = 1;
+        const x = idx % w, y = (idx / w) | 0;
+        const p = idx * 4;
+        const dr = Math.abs(data[p]   - bgR);
+        const dg = Math.abs(data[p+1] - bgG);
+        const db = Math.abs(data[p+2] - bgB);
+        if (dr + dg + db > tolerance) continue;
+        data[p+3] = 0; // transparent
+        if (x > 0)   queue.push(idx - 1);
+        if (x < w-1) queue.push(idx + 1);
+        if (y > 0)   queue.push(idx - w);
+        if (y < h-1) queue.push(idx + w);
+      }
+      ctx.putImageData(id, 0, 0);
+      imgEl.src = canvas.toDataURL('image/png');
+    }
+    document.querySelectorAll('img[src="kory.png"]').forEach(img => removeDarkBg(img, 90));
+  </script>
+
+</body>
+</html>
