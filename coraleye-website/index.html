@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Coraleye — The customer agent that knows, acts, and never sleeps</title>
+  <title>Coraleye , The customer agent that knows, acts, and never sleeps</title>
   <meta name="description" content="Intelligent customer success, on autopilot. Coraleye unifies every customer interaction and deploys Cory, an AI agent that surfaces churn risks and executes recovery plays before you'd notice the pattern." />
   <style>
     /* ─── Reset & Base ─────────────────────────────────────────────── */
@@ -294,16 +294,17 @@
     }
 
     .hero-ticker {
-      margin-top: 32px;
+      margin-top: 48px;
+      margin-bottom: 32px;
       max-width: 680px;
     }
 
     .ticker-label {
       font-size: 0.8rem;
-      color: var(--text-subtle);
+      color: var(--orange);
       text-transform: uppercase;
       letter-spacing: 0.14em;
-      margin-bottom: 12px;
+      margin-bottom: 20px;
       font-weight: 700;
     }
 
@@ -466,11 +467,11 @@
 
     .sp-logo-pill {
       padding: 4px 10px;
-      background: var(--bg-raised);
-      border: 1px solid var(--border);
+      background: var(--orange);
+      border: 1px solid var(--orange);
       border-radius: 6px;
       font-size: 0.75rem;
-      color: var(--text-subtle);
+      color: #ffffff;
       font-weight: 500;
       letter-spacing: 0.03em;
     }
@@ -556,7 +557,7 @@
     .problem-stat-row {
       display: flex;
       gap: 32px;
-      margin-top: 40px;
+      margin-top: 16px;
     }
 
     .problem-stat {
@@ -658,12 +659,12 @@
     }
 
     .how-header h2 { margin-bottom: 16px; }
-    .how-header p { color: var(--text-muted); font-size: 1rem; }
+    .how-header p { color: var(--text-muted); font-size: 1rem; line-height: 1.7; font-style: normal; }
 
     .steps-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
+      gap: 24px;
       position: relative;
     }
 
@@ -760,7 +761,7 @@
       width: 300px;
       height: 300px;
       border-radius: 50%;
-      background: var(--bg-card);
+      background: #1a2744;
       border: 1px solid var(--border);
       display: flex;
       align-items: center;
@@ -810,8 +811,9 @@
 
     .cory-info p {
       color: var(--text-muted);
-      font-size: 1.0rem;
-      line-height: 1.8;
+      font-size: 1rem;
+      line-height: 1.7;
+      font-style: normal;
       margin-bottom: 16px;
     }
 
@@ -943,7 +945,7 @@
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 20px;
-      padding: 72px 48px;
+      padding: 48px 48px;
       max-width: 720px;
       margin: 0 auto;
       overflow: hidden;
@@ -983,7 +985,9 @@
 
     /* ─── Footer ────────────────────────────────────────────────────── */
     footer {
-      border-top: 1px solid var(--border);
+      background: #1a2744;
+      color: rgba(255,255,255,0.7);
+      border-top: 1px solid rgba(255,255,255,0.12);
       padding: 48px 0;
     }
 
@@ -1031,15 +1035,27 @@
 
     .footer-links a {
       font-size: 0.85rem;
-      color: var(--text-subtle);
+      color: rgba(255,255,255,0.6);
       transition: color 0.15s;
     }
 
-    .footer-links a:hover { color: var(--text-muted); }
+    .footer-links a:hover { color: rgba(255,255,255,0.9); }
 
     .footer-right {
       font-size: 0.8rem;
-      color: var(--text-subtle);
+      color: rgba(255,255,255,0.4);
+    }
+
+    .footer-tagline {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.5);
+      margin-top: 2px;
+    }
+
+    .footer-brand {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #ffffff;
     }
 
     /* ─── Scroll Reveal ─────────────────────────────────────────────── */
@@ -1068,6 +1084,15 @@
       .problem-right { order: -1; }
     }
 
+    @media (max-width: 768px) {
+      #before-after .container > div:last-child { grid-template-columns: 1fr; }
+      #before-after [style*="width:80%"] { width: 100% !important; }
+      #contact .container > div { grid-template-columns: 1fr; gap: 40px; }
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-cory-img { max-height: 240px; }
+      .hero-visual { display: none; }
+    }
+
     @media (max-width: 600px) {
       .section { padding: 72px 0; }
       #hero { padding: 120px 0 72px; }
@@ -1076,6 +1101,19 @@
       .cory-traits { grid-template-columns: 1fr; }
       .cta-box { padding: 48px 24px; }
       .footer-inner { flex-direction: column; align-items: flex-start; }
+    }
+
+    #contact input::placeholder,
+    #contact textarea::placeholder {
+      color: rgba(255,255,255,0.4);
+    }
+    #contact input:focus,
+    #contact textarea:focus {
+      border-bottom-color: #e07230;
+    }
+
+    .nav-dropdown:hover .dropdown-menu {
+      display: block !important;
     }
   </style>
 </head>
@@ -1093,13 +1131,20 @@
         </a>
         <ul class="nav-links">
           <li><a href="#problem">Problem</a></li>
+          <li style="position:relative;" class="nav-dropdown">
+            <a href="#" style="display:flex;align-items:center;gap:4px;">Product 
+              <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </a>
+            <ul style="display:none;position:absolute;top:100%;left:0;background:#1a2744;border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:8px;min-width:180px;list-style:none;margin-top:8px;z-index:200;" class="dropdown-menu">
+              <li><a href="#before-after" style="display:block;padding:8px 12px;font-size:0.85rem;color:rgba(255,255,255,0.8);border-radius:6px;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='transparent'">Our Approach</a></li>
+              <li><a href="#how-it-works" style="display:block;padding:8px 12px;font-size:0.85rem;color:rgba(255,255,255,0.8);border-radius:6px;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='transparent'">How It Works</a></li>
+              <li><a href="#meet-cory" style="display:block;padding:8px 12px;font-size:0.85rem;color:rgba(255,255,255,0.8);border-radius:6px;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='transparent'">Meet Cory</a></li>
+            </ul>
+          </li>
           <li><a href="#about">About</a></li>
-          <li><a href="#how-it-works">How it works</a></li>
-          <li><a href="#meet-cory">Meet Cory</a></li>
         </ul>
         <div class="nav-cta">
-          <a href="https://coraleye-demo.onrender.com" class="btn btn-ghost" target="_blank" rel="noopener">Watch Demo</a>
-          <a href="mailto:hello@coraleye.com" class="btn btn-primary">Request Access</a>
+          <a href="#contact" class="btn btn-primary">Get in Touch</a>
         </div>
       </div>
     </div>
@@ -1114,16 +1159,12 @@
         <div class="hero-content">
           <div class="hero-badge">
             <div class="hero-badge-dot"></div>
-            AI-native customer success platform
+            The agentic customer success platform
           </div>
-          <h1>The customer agent that<br><em>knows, acts,</em> and never sleeps</h1>
-          <p class="hero-sub">Intelligent customer success, on autopilot. Coraleye unifies every interaction across your stack and deploys Cory — an AI agent that catches churn before you'd notice the pattern.</p>
+          <h1>The customer agent that never sleeps</h1>
+          <p class="hero-sub">Know. Your. Customer. Coraleye unifies every interaction across your stack and deploys Cory, our AI agent that acts on every signal before it's too late.</p>
           <div class="hero-ctas">
-            <a href="https://coraleye-demo.onrender.com" class="btn btn-primary btn-lg" target="_blank" rel="noopener">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="white" stroke-width="1.5"/><polygon points="6.5,5 11,8 6.5,11" fill="white"/></svg>
-              Watch Demo
-            </a>
-            <a href="mailto:hello@coraleye.com" class="btn btn-outline btn-lg">Request Access →</a>
+            <a href="#contact" class="btn btn-outline btn-lg">Get in Touch →</a>
           </div>
           <div class="hero-ticker">
             <div class="ticker-label">Live Cory dispatch</div>
@@ -1149,72 +1190,21 @@
     </div>
   </section>
 
-  <!-- ─── About Us ───────────────────────────────────────────────────── -->
-  <section id="about" class="section">
-    <div class="container">
-      <div class="label">About Coraleye</div>
-      <h2>Why We Built Coraleye</h2>
-      <p>Customer success teams are flying blind. Accounts get hot-potatoed between onboarding, account management, product, and support — with every interaction scattered across Zendesk, Intercom, Gong, Slack, and email. By the time anyone connects the dots, the customer has already decided to leave. We built Coraleye to change that.</p>
-      <p>Coraleye was founded by three friends from the Bay Area and Northwestern — Chris, Arman, and Duane — who saw this problem firsthand across finance, AI engineering, and investing.</p>
-      <div class="contact-block">
-        <h3>Get in Touch</h3>
-        <p><a href="mailto:hello@coraleye.com" class="mail-link">hello@coraleye.com</a></p>
-        <p>Interested in becoming a design partner? We'd love to hear from you.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── Integration Strip ──────────────────────────────────────────── -->
-  <div class="integration-strip">
-    <div class="container">
-      <div class="integration-strip-inner">
-        <span class="strip-label">Connects to</span>
-        <div class="strip-logos">
-          <div class="strip-logo">
-            <div class="strip-logo-icon" style="background:#1f7a3c10;">💬</div>
-            Zendesk
-          </div>
-          <div class="strip-logo">
-            <div class="strip-logo-icon" style="background:#ff4f0010;">🎙</div>
-            Gong
-          </div>
-          <div class="strip-logo">
-            <div class="strip-logo-icon" style="background:#1f6feb10;">💭</div>
-            Intercom
-          </div>
-          <div class="strip-logo">
-            <div class="strip-logo-icon" style="background:#6366f110;">🤖</div>
-            Decagon
-          </div>
-          <div class="strip-logo">
-            <div class="strip-logo-icon" style="background:#4a154b10;">#</div>
-            Slack
-          </div>
-          <div class="strip-logo">
-            <div class="strip-logo-icon" style="background:#1f497d18;">✉</div>
-            Email
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- ─── Problem ────────────────────────────────────────────────────── -->
   <section id="problem" class="section">
     <div class="container">
       <div class="problem-grid">
         <div class="problem-left reveal">
           <div class="label">The problem</div>
+          <p style="font-size:1rem;color:var(--text-muted);line-height:1.7;margin-bottom:16px;">Thousands of interactions. Fragmented systems. Disconnected teams. The customer experience suffers.</p>
           <h2>By the time you connect the dots, they've already decided to leave</h2>
-          <p>Accounts are hot-potatoed between onboarding, account management, product, and support. Every team sees a slice of the story — no one sees the whole thing.</p>
-          <p>By the time anyone connects the dots, the customer has already decided to leave.</p>
           <div class="problem-stat-row">
             <div class="problem-stat">
               <div class="stat-num">8+</div>
               <div class="stat-desc">People touching one account at the same time</div>
             </div>
             <div class="problem-stat">
-              <div class="stat-num">6 tools</div>
+              <div class="stat-num" style="white-space:nowrap;">5+ tools</div>
               <div class="stat-desc">Siloed systems no one reads in full</div>
             </div>
             <div class="problem-stat">
@@ -1222,6 +1212,7 @@
               <div class="stat-desc">Warning before a quiet churn decision is made</div>
             </div>
           </div>
+          <p style="font-size:0.8rem;color:var(--text-subtle);font-style:italic;margin-top:16px;">— Head of Customer Success, $1B+ technology company</p>
         </div>
         <div class="problem-right reveal reveal-delay-2">
           <div class="chaos-diagram">
@@ -1240,6 +1231,70 @@
         </div>
       </div>
     </div>
+
+    <div class="container" style="margin-top:40px;">
+      <div style="margin-top:32px;background:rgba(224,114,48,0.06);border:1px solid rgba(224,114,48,0.2);border-radius:var(--radius-lg);padding:28px;position:relative;min-height:180px;">
+        <div id="quote-display">
+          <div class="quote-slide" style="transition:opacity 0.4s ease;">
+            <div style="font-size:2.5rem;line-height:1;color:#e07230;opacity:1;font-family:Georgia,serif;margin-bottom:8px;">"</div>
+            <p style="font-size:0.95rem;line-height:1.75;color:var(--text-muted);font-style:italic;margin-bottom:20px;">Most companies aren't systems of action, they are systems of recommendations. Where a company could differentiate is if it had the recommendation engine and then helped me do it.</p>
+            <div style="font-size:2.5rem;line-height:1;color:#e07230;font-family:Georgia,serif;text-align:right;margin-top:-8px;">"</div>
+            <div style="padding-top:16px;border-top:1px solid rgba(224,114,48,0.2);">
+              <div style="font-size:0.82rem;color:var(--text-subtle);font-style:italic;">— Global Head of Customer Success, $15B+ technology company</div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:24px;">
+          <div class="quote-dot" style="width:8px;height:8px;border-radius:50%;background:var(--orange);transition:opacity 0.3s;"></div>
+          <div class="quote-dot" style="width:8px;height:8px;border-radius:50%;background:var(--border);transition:opacity 0.3s;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Before/After ───────────────────────────────────────────────── -->
+  <section id="before-after" style="padding:100px 0;background: linear-gradient(to right, #1a2744 0%, #1a2744 25%, rgba(26,39,68,0.9) 40%, rgba(26,39,68,0.75) 55%, rgba(26,39,68,0.55) 70%, rgba(26,39,68,0.35) 85%, rgba(26,39,68,0.2) 100%);position: relative;overflow: hidden;">
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);background-size:64px 64px;mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);-webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);pointer-events:none;"></div>
+    <div class="container">
+      <div style="text-align:center;margin-bottom:64px;">
+        <div style="display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#e07230;margin-bottom:20px;">
+          <span style="display:block;width:18px;height:2px;background:#e07230;border-radius:2px;"></span>
+          Our Approach
+        </div>
+        <h2 style="color:#ffffff;margin-bottom:16px;">Replace reactive chaos<br>with proactive intelligence</h2>
+        <p style="font-size:1rem;color:rgba(255,255,255,0.55);line-height:1.7;">The difference Coraleye makes, from day one</p>
+      </div>
+
+      <div style="position:relative;">
+
+        <div style="background:#111d33;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:36px 40px;width:80%;margin:0 auto 16px auto;">
+          <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:12px;">Before</div>
+          <h3 style="color:#ffffff;font-size:1.3rem;margin-bottom:6px;">Reactive and Blind</h3>
+          <p style="color:rgba(255,255,255,0.35);font-size:0.85rem;margin-bottom:24px;">Tedious, fragmented, expensive</p>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:12px;">
+            <li style="display:flex;align-items:flex-start;gap:12px;color:rgba(255,255,255,0.45);font-size:0.9rem;"><span style="color:#444;flex-shrink:0;">▪</span>Accounts hot-potatoed across five teams with no shared context</li>
+            <li style="display:flex;align-items:flex-start;gap:12px;color:rgba(255,255,255,0.45);font-size:0.9rem;"><span style="color:#444;flex-shrink:0;">▪</span>Interactions scattered across six siloed systems nobody reads in full</li>
+            <li style="display:flex;align-items:flex-start;gap:12px;color:rgba(255,255,255,0.45);font-size:0.9rem;"><span style="color:#444;flex-shrink:0;">▪</span>Health scores based on login frequency, not what customers actually said</li>
+            <li style="display:flex;align-items:flex-start;gap:12px;color:rgba(255,255,255,0.45);font-size:0.9rem;"><span style="color:#444;flex-shrink:0;">▪</span>CSMs spending hours on manual follow-ups instead of relationships</li>
+            <li style="display:flex;align-items:flex-start;gap:12px;color:rgba(255,255,255,0.45);font-size:0.9rem;"><span style="color:#444;flex-shrink:0;">▪</span>Churn decisions made before anyone on the team noticed the pattern</li>
+          </ul>
+        </div>
+
+        <div style="background:#111418;border:1px solid rgba(224,114,48,0.2);border-radius:12px;padding:36px 40px;margin-top:-32px;position:relative;z-index:1;">
+          <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#e07230;margin-bottom:12px;">With Coraleye</div>
+          <h3 style="color:#ffffff;font-size:1.3rem;margin-bottom:6px;">Proactive and Complete</h3>
+          <p style="color:rgba(255,255,255,0.5);font-size:0.85rem;margin-bottom:24px;">Scalable, intelligent, automatic</p>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:12px;">
+            <li style="display:flex;align-items:flex-start;gap:12px;color:rgba(255,255,255,0.85);font-size:0.9rem;"><span style="color:#e07230;flex-shrink:0;">✓</span>Every interaction unified in one timeline across every system</li>
+            <li style="display:flex;align-items:flex-start;gap:12px;color:rgba(255,255,255,0.85);font-size:0.9rem;"><span style="color:#e07230;flex-shrink:0;">✓</span>Cory reads signals across every system simultaneously</li>
+            <li style="display:flex;align-items:flex-start;gap:12px;color:rgba(255,255,255,0.85);font-size:0.9rem;"><span style="color:#e07230;flex-shrink:0;">✓</span>Health scores derived from actual conversations, not proxies</li>
+            <li style="display:flex;align-items:flex-start;gap:12px;color:rgba(255,255,255,0.85);font-size:0.9rem;"><span style="color:#e07230;flex-shrink:0;">✓</span>Plays drafted and executed automatically with one CSM approval</li>
+            <li style="display:flex;align-items:flex-start;gap:12px;color:rgba(255,255,255,0.85);font-size:0.9rem;"><span style="color:#e07230;flex-shrink:0;">✓</span>Risk flagged weeks before the customer decides to leave</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
   </section>
 
   <!-- ─── How it Works ───────────────────────────────────────────────── -->
@@ -1254,25 +1309,66 @@
         <div class="step-card reveal">
           <div class="step-num">01</div>
           <h3>Unify</h3>
-          <p>Every interaction — support tickets, calls, messages, emails — flows into a single customer timeline. No more tab-switching, no more gaps.</p>
-          <div class="step-integrations">
-            <span class="int-tag">Zendesk</span>
-            <span class="int-tag">Gong</span>
-            <span class="int-tag">Intercom</span>
-            <span class="int-tag">Decagon</span>
-            <span class="int-tag">Slack</span>
-            <span class="int-tag">Email</span>
+          <p>Every interaction, support tickets, calls, messages, and emails flows into a single customer timeline. No more tab-switching, no more gaps.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px;">
+            <div>
+              <div style="font-size:0.72rem;font-weight:700;color:var(--text-subtle);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Communications</div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                <span class="int-tag">Salesforce</span>
+                <span class="int-tag">Zendesk</span>
+                <span class="int-tag">Gong</span>
+                <span class="int-tag">Slack</span>
+                <span class="int-tag">Email</span>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:0.72rem;font-weight:700;color:var(--text-subtle);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Usage Data</div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                <span class="int-tag">Tableau</span>
+                <span class="int-tag">Pendo</span>
+                <span class="int-tag">Amplitude</span>
+                <span class="int-tag">Mixpanel</span>
+              </div>
+            </div>
           </div>
         </div>
         <div class="step-card reveal reveal-delay-1">
           <div class="step-num">02</div>
           <h3>Analyze</h3>
-          <p>Cory reads patterns across every system simultaneously — tracking sentiment shifts, response lag, feature friction, and escalation signals no single tool can see.</p>
+          <p>Cory reads patterns across every system simultaneously, tracking sentiment shifts, response lag, feature friction, and escalation signals no single tool can see.</p>
         </div>
         <div class="step-card reveal reveal-delay-2">
           <div class="step-num">03</div>
           <h3>Act</h3>
-          <p>Cory deploys the right recovery play — a QBR trigger, an outreach draft, an escalation flag. Your CSM approves in one click. No missed windows.</p>
+          <p>Cory deploys the right recovery play, a QBR trigger, an outreach draft, an escalation flag. Your CSM approves in one click. No missed windows.</p>
+        </div>
+      </div>
+      <div style="margin-top:48px;position:relative;overflow:hidden;border-radius:16px;border:1px solid var(--border);box-shadow:0 8px 40px rgba(0,0,0,0.08);">
+        <div id="how-slider" style="display:flex;transition:transform 0.5s ease;">
+          <div style="min-width:100%;position:relative;">
+            <div style="position:absolute;top:16px;left:16px;z-index:10;background:#e07230;color:#ffffff;font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:5px 12px;border-radius:100px;">01 — Unify</div>
+            <img src="unify-module.png" alt="Unify" style="width:100%;display:block;" />
+          </div>
+          <div style="min-width:100%;position:relative;">
+            <div style="position:absolute;top:16px;left:16px;z-index:10;background:#e07230;color:#ffffff;font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:5px 12px;border-radius:100px;">02 — Analyze</div>
+            <img src="portfolio-analyze-module.png" alt="Analyze" style="width:100%;display:block;" />
+          </div>
+          <div style="min-width:100%;position:relative;">
+            <div style="position:absolute;top:16px;left:16px;z-index:10;background:#e07230;color:#ffffff;font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:5px 12px;border-radius:100px;">03 — Act</div>
+            <img src="act-workbench-module.png" alt="Act Workbench" style="width:100%;display:block;" />
+          </div>
+          <div style="min-width:100%;position:relative;">
+            <div style="position:absolute;top:16px;left:16px;z-index:10;background:#e07230;color:#ffffff;font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:5px 12px;border-radius:100px;">03 — Act</div>
+            <img src="act-play-module.png" alt="Act Play Approval" style="width:100%;display:block;" />
+          </div>
+        </div>
+        <button onclick="moveSlide(-1)" style="position:absolute;left:16px;top:50%;transform:translateY(-50%);background:rgba(26,39,68,0.85);border:1px solid rgba(255,255,255,0.15);color:#ffffff;width:40px;height:40px;border-radius:50%;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:20;">‹</button>
+        <button onclick="moveSlide(1)" style="position:absolute;right:16px;top:50%;transform:translateY(-50%);background:rgba(26,39,68,0.85);border:1px solid rgba(255,255,255,0.15);color:#ffffff;width:40px;height:40px;border-radius:50%;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:20;">›</button>
+        <div style="position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:20;">
+          <div class="how-dot" style="width:8px;height:8px;border-radius:50%;background:#e07230;transition:all 0.3s;"></div>
+          <div class="how-dot" style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.3);transition:all 0.3s;"></div>
+          <div class="how-dot" style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.3);transition:all 0.3s;"></div>
+          <div class="how-dot" style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.3);transition:all 0.3s;"></div>
         </div>
       </div>
     </div>
@@ -1293,8 +1389,7 @@
         <div class="cory-info reveal reveal-delay-1">
           <div class="label">Meet Cory</div>
           <h2>Your AI agent that never misses a signal</h2>
-          <p>Cory reads across the full customer timeline — every Zendesk ticket, Gong call, Slack message, and email thread — and connects signals that no human would catch in the noise of eight parallel relationships.</p>
-          <p>When a pattern points to risk, Cory doesn't file a report. Cory pushes the recovery play, before anyone thought to ask.</p>
+          <p>Cory reads across the full customer timeline, picking up signals from conversations and usage across your entire account base.</p>
           <div class="cory-traits">
             <div class="cory-trait">
               <div class="trait-icon">🔭</div>
@@ -1321,7 +1416,7 @@
               <div class="trait-icon">🛡</div>
               <div class="trait-text">
                 <strong>Human-in-the-loop</strong>
-                CSMs stay in control — Cory does the legwork, you make the call
+                CSMs stay in control , Cory does the legwork, you make the call
               </div>
             </div>
           </div>
@@ -1330,57 +1425,34 @@
     </div>
   </section>
 
-  <!-- ─── Quotes ─────────────────────────────────────────────────────── -->
-  <section id="quotes" class="section">
+  <!-- ─── About Us ───────────────────────────────────────────────────── -->
+  <section id="about" class="section">
     <div class="container">
-      <div class="quotes-header reveal">
-        <div class="label">From CS leaders</div>
-        <h2>The problem is universal.<br>The solution hasn't existed — until now.</h2>
-      </div>
-      <div class="quotes-grid">
-        <div class="quote-card reveal">
-          <div class="quote-mark">"</div>
-          <p class="quote-text">We have sometimes up to eight people interacting with the customer at any given time. It is very hard to look across all of those different connections.</p>
-          <div class="quote-attr">
-            <div class="quote-name">Head of Customer Success</div>
-            <div class="quote-company">$1B+ technology company</div>
-          </div>
-        </div>
-        <div class="quote-card reveal reveal-delay-1">
-          <div class="quote-mark">"</div>
-          <p class="quote-text">Most companies aren't systems of action, they are systems of recommendations.</p>
-          <div class="quote-attr">
-            <div class="quote-name">Global Head of Customer Success</div>
-            <div class="quote-company">$15B+ technology company</div>
-          </div>
-        </div>
-        <div class="quote-card reveal reveal-delay-2">
-          <div class="quote-mark">"</div>
-          <p class="quote-text">I would like my CSM team to spend zero time on follow-ups and actually taking action.</p>
-          <div class="quote-attr">
-            <div class="quote-name">Director of Customer Success</div>
-            <div class="quote-company">Series C startup</div>
-          </div>
-        </div>
-      </div>
+      <div class="label">About Coraleye</div>
+      <h2>Why We Built Coraleye</h2>
+      <p style="margin-top:32px;">Coraleye started with a simple observation. Customer experience is broken. Across finance, investing, and engineering, we kept watching great companies lose customers they should have kept, due to fragmented systems that prevent truly knowing the customer.</p>
+      <p style="margin-top:24px;">We built Coraleye because the data to prevent it already existed. It just lived in five different places and nobody was connecting it. When businesses truly know their customers, they retain more revenue, and the people on the other side of those relationships get the experience they actually deserve.</p>
+      <p style="margin-top:32px;">Coraleye was founded by Duane, Chris, and Arman, three college friends from Duke and Northwestern who decided to stop watching this problem happen and start solving it.</p>
     </div>
   </section>
 
-  <!-- ─── CTA ────────────────────────────────────────────────────────── -->
-  <section id="cta-section">
-    <div class="cta-glow"></div>
+  <!-- ─── Contact ─────────────────────────────────────────────────────── -->
+  <section id="contact" class="section" style="background:#1a2744;">
     <div class="container">
-      <div class="cta-box reveal">
-        <div class="label" style="justify-content:center;">Get started</div>
-        <h2>See Coraleye in action</h2>
-        <p>Watch how Cory unifies a full customer timeline and surfaces a recovery play in real time.</p>
-        <div class="cta-buttons">
-          <a href="https://coraleye-demo.onrender.com" class="btn btn-primary btn-lg" target="_blank" rel="noopener">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="white" stroke-width="1.5"/><polygon points="6.5,5 11,8 6.5,11" fill="white"/></svg>
-            Watch the Live Demo
-          </a>
-          <a href="mailto:hello@coraleye.com" class="btn btn-outline btn-lg">Talk to us →</a>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;">
+        <div>
+          <div class="label" style="color:#e07230;">Contact Us</div>
+          <h2 style="color:#ffffff;margin-bottom:16px;">Ready to Know Your Customer?</h2>
+          <p style="font-size:1rem;color:rgba(255,255,255,0.55);line-height:1.7;">Tell us about your team and we will be in touch within 24 hours.</p>
         </div>
+        <form action="mailto:chris@coraleye.ai" method="POST" enctype="text/plain" style="display:flex;flex-direction:column;gap:20px;">
+          <input type="text" name="name" placeholder="Name" required style="background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,0.3);padding:12px 0;color:#ffffff;font-size:0.95rem;outline:none;font-family:inherit;" />
+          <input type="text" name="company" placeholder="Company name" style="background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,0.3);padding:12px 0;color:#ffffff;font-size:0.95rem;outline:none;font-family:inherit;" />
+          <input type="email" name="email" placeholder="Email" required style="background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,0.3);padding:12px 0;color:#ffffff;font-size:0.95rem;outline:none;font-family:inherit;" />
+          <input type="text" name="role" placeholder="Your role" style="background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,0.3);padding:12px 0;color:#ffffff;font-size:0.95rem;outline:none;font-family:inherit;" />
+          <textarea name="message" placeholder="Tell us more about your team and goals..." rows="3" style="background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,0.3);padding:12px 0;color:#ffffff;font-size:0.95rem;outline:none;font-family:inherit;resize:none;"></textarea>
+          <button type="submit" class="btn btn-primary btn-lg" style="margin-top:8px;justify-content:center;">Submit</button>
+        </form>
       </div>
     </div>
   </section>
@@ -1395,13 +1467,12 @@
           </div>
           <div>
             <div class="footer-brand">Coraleye</div>
-            <div class="footer-tagline">Intelligent customer success, on autopilot</div>
+            <div class="footer-tagline">The agentic customer success platform</div>
           </div>
         </div>
         <div class="footer-links">
-          <a href="https://coraleye.com">coraleye.com</a>
-          <a href="mailto:hello@coraleye.com">hello@coraleye.com</a>
-          <a href="https://coraleye-demo.onrender.com" target="_blank" rel="noopener">Live Demo</a>
+          <a href="https://coraleye.ai">coraleye.ai</a>
+          <a href="mailto:hello@coraleye.ai">hello@coraleye.ai</a>
         </div>
         <div class="footer-right">
           © 2026 Coraleye. All rights reserved.
@@ -1436,9 +1507,9 @@
 
     // Ticker content for hero live dispatch
     const tickerMessages = [
-      `Cory flagged <span class="ticker-keyword">Northstar Insurance</span> — <span class="ticker-keyword">bot failure</span> + <span class="ticker-keyword">unanswered renewal question</span> + <span class="ticker-keyword">support escalation</span>. <span class="ticker-keyword">Apology call deployed</span>.`,
-      `Cory connected <span class="ticker-keyword">3 signals</span> across <span class="ticker-keyword">Gong, Zendesk, and Decagon</span> for <span class="ticker-keyword">Rivers Bank</span>. <span class="ticker-keyword">Recovery play approved and sent</span>.`,
-      `Cory detected a <span class="ticker-keyword">competitor mention pattern</span> across <span class="ticker-keyword">4 accounts</span>. <span class="ticker-keyword">Expansion plays queued</span> for <span class="ticker-keyword">CSM review</span>.`
+      `Cory flagged <span class="ticker-keyword">Northstar Insurance</span> across <span class="ticker-keyword">3 signals</span>: <span class="ticker-keyword">bot failure</span>, unanswered renewal question, and support escalation. <span class="ticker-keyword">Apology call deployed</span>.`,
+      `Cory detected that <span class="ticker-keyword">Clearbridge Logistics</span> has not activated <span class="ticker-keyword">auto-reporting</span> despite 6 months on platform. <span class="ticker-keyword">Proactive enablement play queued</span> to drive deeper adoption and expansion.`,
+      `Cory drafted a <span class="ticker-keyword">QBR presentation</span> for <span class="ticker-keyword">Rivers Bank</span> pulling 90 days of interaction data, health trends, and key wins. <span class="ticker-keyword">Ready for CSM review</span> in one click.`
     ];
     const tickerEl = document.querySelector('.ticker-message');
     let tickerIndex = 0;
@@ -1495,6 +1566,55 @@
       imgEl.src = canvas.toDataURL('image/png');
     }
     document.querySelectorAll('img[src="kory.png"]').forEach(img => removeDarkBg(img, 90));
+
+    const quoteSlides = [
+      {
+        text: `Most companies aren't systems of action, they are systems of recommendations. Where a company could differentiate is if it had the recommendation engine and then helped me do it.`,
+        name: `Global Head of Customer Success`,
+        company: `$15B+ technology company`
+      },
+      {
+        text: `I would like my CSM team to spend zero time on follow-ups and actually taking action — booking the call, writing the email, sending an escalation internally, not just drafting the language.`,
+        name: `Director of Customer Success`,
+        company: `Series C startup`
+      }
+    ];
+    let quoteIndex = 0;
+    const quoteDots = document.querySelectorAll('.quote-dot');
+    function rotateQuote() {
+      quoteIndex = (quoteIndex + 1) % quoteSlides.length;
+      const q = quoteSlides[quoteIndex];
+      const display = document.getElementById('quote-display');
+      if (!display) return;
+      display.style.opacity = '0';
+      setTimeout(() => {
+        display.innerHTML = `
+          <div style="transition:opacity 0.4s ease;">
+            <div style="font-size:2.5rem;line-height:1;color:#e07230;opacity:1;font-family:Georgia,serif;margin-bottom:8px;">"</div>
+            <p style="font-size:0.95rem;line-height:1.75;color:var(--text-muted);font-style:italic;margin-bottom:20px;">${q.text}</p>
+            <div style="font-size:2.5rem;line-height:1;color:#e07230;font-family:Georgia,serif;text-align:right;margin-top:-8px;">"</div>
+            <div style='padding-top:16px;border-top:1px solid rgba(224,114,48,0.2);'>
+              <div style='font-size:0.82rem;color:#9aa0ae;font-style:italic;'>— ${q.name}, ${q.company}</div>
+            </div>
+          </div>`;
+        display.style.opacity = '1';
+        quoteDots.forEach((dot, i) => {
+          dot.style.background = i === quoteIndex ? '#e07230' : 'rgba(0,0,0,0.08)';
+        });
+      }, 400);
+    }
+    setInterval(rotateQuote, 4000);
+
+    let howSlideIndex = 0;
+    const howSlider = document.getElementById('how-slider');
+    const howDots = document.querySelectorAll('.how-dot');
+    function moveSlide(dir) {
+      howSlideIndex = (howSlideIndex + dir + 4) % 4;
+      howSlider.style.transform = `translateX(-${howSlideIndex * 100}%)`;
+      howDots.forEach((dot, i) => {
+        dot.style.background = i === howSlideIndex ? '#e07230' : 'rgba(255,255,255,0.3)';
+      });
+    }
   </script>
 
 </body>
