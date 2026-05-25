@@ -1200,6 +1200,24 @@
       /* Problem section — ensure text comes before diagram */
       .problem-right { order: 2; }
       .problem-left { order: 1; }
+
+      /* Problem diagram — prevent overflow, wrap tool/stakeholder rows into 2-col grid */
+      #problem .container { overflow-x: hidden; }
+      .chaos-diagram { overflow: hidden; }
+      .chaos-diagram > div[style*="display:flex;gap:8px"] {
+        flex-wrap: wrap !important;
+      }
+      .chaos-diagram > div[style*="display:flex;gap:8px"] > div {
+        flex: 0 0 calc(50% - 4px) !important;
+        min-width: 0 !important;
+        padding: 8px !important;
+      }
+      .chaos-diagram > div[style*="display:flex;gap:8px"] > div > div:first-child {
+        font-size: 0.75rem !important;
+      }
+
+      /* How It Works headline — prevent cut-off */
+      .how-header h2 { font-size: clamp(1.6rem, 6vw, 3rem) !important; white-space: normal !important; padding: 0 16px; }
     }
 
     @media (max-width: 600px) {
