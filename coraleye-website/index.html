@@ -657,7 +657,7 @@
 
     .how-header {
       text-align: center;
-      max-width: 560px;
+      max-width: 820px;
       margin: 0 auto 72px;
     }
 
@@ -1312,7 +1312,7 @@
       <div class="reveal">
         <div class="label">The problem</div>
         <p style="font-size:1rem;color:var(--text-muted);line-height:1.7;margin-bottom:16px;">Your customer interacted with 6+ people across 6+ systems this month. Nobody has the full picture.</p>
-        <h2>By the time you connect the dots, they've already decided to leave</h2>
+        <h2>By the time you connect the dots,<br>they've already decided to leave</h2>
       </div>
 
       <!-- Full-width diagram -->
@@ -1479,7 +1479,7 @@
     <div class="container">
       <div class="how-header reveal">
         <div class="label">How it works</div>
-        <h2 style="white-space:nowrap;">From signal to action in one motion</h2>
+        <h2>From signal to action in one motion</h2>
         <p>Coraleye ingests every customer touchpoint, Cory reads the patterns, and the right play is executed before a human would have thought to look.</p>
       </div>
       <div class="steps-grid">
@@ -1563,8 +1563,8 @@
               <span style="font-size:0.7rem;font-weight:700;background:rgba(232,120,42,0.15);color:#e8782a;border:1px solid rgba(232,120,42,0.3);border-radius:100px;padding:3px 10px;">Renewal in 18 days</span>
             </div>
 
-            <!-- Step 1 -->
-            <div style="padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.07);margin-bottom:16px;">
+            <!-- Step 1 — visible immediately -->
+            <div class="cory-step" style="padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.07);margin-bottom:16px;opacity:1;transition:opacity 0.6s ease;">
               <div style="display:flex;gap:12px;">
                 <div style="flex-shrink:0;font-size:0.68rem;font-weight:700;color:rgba(232,120,42,0.6);width:18px;padding-top:2px;">01</div>
                 <div>
@@ -1574,8 +1574,8 @@
               </div>
             </div>
 
-            <!-- Step 2 -->
-            <div style="padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.07);margin-bottom:16px;">
+            <!-- Step 2 — hidden initially -->
+            <div class="cory-step" style="padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.07);margin-bottom:16px;opacity:0;transition:opacity 0.6s ease;">
               <div style="display:flex;gap:12px;">
                 <div style="flex-shrink:0;font-size:0.68rem;font-weight:700;color:rgba(232,120,42,0.6);width:18px;padding-top:2px;">02</div>
                 <div>
@@ -1585,8 +1585,8 @@
               </div>
             </div>
 
-            <!-- Step 3 -->
-            <div style="padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.07);margin-bottom:16px;">
+            <!-- Step 3 — hidden initially -->
+            <div class="cory-step" style="padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.07);margin-bottom:16px;opacity:0;transition:opacity 0.6s ease;">
               <div style="display:flex;gap:12px;">
                 <div style="flex-shrink:0;font-size:0.68rem;font-weight:700;color:rgba(232,120,42,0.6);width:18px;padding-top:2px;">03</div>
                 <div>
@@ -1596,8 +1596,8 @@
               </div>
             </div>
 
-            <!-- Step 4 — active -->
-            <div>
+            <!-- Step 4 — hidden initially -->
+            <div class="cory-step" style="opacity:0;transition:opacity 0.6s ease;">
               <div style="display:flex;gap:12px;">
                 <div style="flex-shrink:0;font-size:0.68rem;font-weight:700;color:#e8782a;width:18px;padding-top:2px;">04</div>
                 <div>
@@ -1639,7 +1639,7 @@
   <section id="about" class="section">
     <div class="container">
       <div class="label">About Coraleye</div>
-      <h2>Why We Built Coraleye</h2>
+      <h2>Why we built Coraleye</h2>
       <p style="margin-top:32px;">Coraleye started with a simple observation. Customer experience is broken. Across finance, investing, and engineering, we kept watching great companies lose customers they should have kept, due to fragmented systems that prevent truly knowing the customer.</p>
       <p style="margin-top:24px;">We built Coraleye because the data to prevent it already existed. It just lived in five different places and nobody was connecting it. When businesses truly know their customers, they retain more revenue, and the people on the other side of those relationships get the experience they actually deserve.</p>
       <p style="margin-top:32px;">Coraleye was founded by Duane, Chris, and Arman, three college friends from Duke and Northwestern who decided to stop watching this problem happen and start solving it.</p>
@@ -1652,8 +1652,8 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;">
         <div>
           <div class="label" style="color:#e07230;">Contact Us</div>
-          <h2 style="color:#ffffff;margin-bottom:16px;">Ready to Know Your Customer?</h2>
-          <p style="font-size:1rem;color:rgba(255,255,255,0.55);line-height:1.7;">Tell us about your team and we will be in touch within 24 hours.</p>
+          <h2 style="color:#ffffff;margin-bottom:16px;text-align:left;">Ready to see Coraleye in action?</h2>
+          <p style="font-size:1rem;color:rgba(255,255,255,0.55);line-height:1.7;">Tell us about your team and we will be in touch.</p>
         </div>
         <form action="mailto:chris@coraleye.ai" method="POST" enctype="text/plain" style="display:flex;flex-direction:column;gap:20px;">
           <input type="text" name="name" placeholder="Name" required style="background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,0.3);padding:12px 0;color:#ffffff;font-size:0.95rem;outline:none;font-family:inherit;" />
@@ -1796,6 +1796,40 @@
     }
     setInterval(rotateQuote, 4000);
 
+
+    // ── Meet Cory: sequential step reveal ─────────────────────────────────
+    (function() {
+      var steps = document.querySelectorAll('.cory-step');
+      // Step 1 starts visible; steps 2-4 start hidden
+      for (var i = 1; i < steps.length; i++) {
+        steps[i].style.opacity = '0';
+      }
+      var currentStep = 1; // next step to reveal (0 is already visible)
+
+      function showNextStep() {
+        if (currentStep < steps.length) {
+          steps[currentStep].style.transition = 'opacity 0.6s ease';
+          steps[currentStep].style.opacity = '1';
+          currentStep++;
+          if (currentStep < steps.length) {
+            setTimeout(showNextStep, 3000);
+          } else {
+            setTimeout(resetSteps, 4000);
+          }
+        }
+      }
+
+      function resetSteps() {
+        for (var i = 0; i < steps.length; i++) {
+          steps[i].style.transition = 'opacity 0.3s ease';
+          steps[i].style.opacity = i === 0 ? '1' : '0';
+        }
+        currentStep = 1;
+        setTimeout(showNextStep, 2000);
+      }
+
+      setTimeout(showNextStep, 3000);
+    })();
 
     // ── How It Works: synchronized orbit dot + screenshot ─────────────────
     let currentStep = 0;
